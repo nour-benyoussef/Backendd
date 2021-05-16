@@ -9,6 +9,8 @@ export class CreateCustomerInputs {
 
     @Length(6,12)
     password: string;
+
+    address:String
 }
 
 export class UserLoginInputs {

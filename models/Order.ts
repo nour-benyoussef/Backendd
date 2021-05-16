@@ -13,11 +13,13 @@ export interface OrderDoc extends Document {
     ramarks:string,
     deliveryId: string,
     readyTime: number
+    affect:String
+    state:Boolean
 }
 
 const OrderSchema = new Schema({
     orderID: { type : String, required: true},
-    vandorId: { type : String, required: true},
+    vandorId: { type : String},
     items: [
         {
             food: {type: Schema.Types.ObjectId, ref:"food" , required: true},
@@ -31,7 +33,10 @@ const OrderSchema = new Schema({
     orderStatus : { type : String},
     ramarks:{ type : String},
     deliveryId: { type : String},
-    readyTime: { type : Number}
+    readyTime: { type : Number},
+    affect:{type:String,default:"Affect"},
+    state:{type:Boolean,default:false}
+
 
 },{
     toJSON:{

@@ -97,6 +97,7 @@ export const AddFood = async(req:Request, res:Response,next :NextFunction) => {
 
         const {name,description,category,foodType,readyTime,price} = <CreateFoodInputs>req.body;
         const vandor = await FindVandor(user._id)
+        console.log(user._id)
         if (vandor !== null){
 
           const files = req.files as [Express.Multer.File]

@@ -16,7 +16,7 @@ export const CustomerSignUp = async (req: Request, res: Response, next:NextFunct
         return res.status(400).json(inputsErrors);
     }
 
-    const {email, phone , password} = customerInputs;
+    const {email, phone , password,address} = customerInputs;
 
     const salt= await GenerateSalt()
     const userPassword = await GeneratePassword(password, salt)
@@ -38,7 +38,7 @@ export const CustomerSignUp = async (req: Request, res: Response, next:NextFunct
         otp_expiry: expiry,
         firstName:'',
         lastName:'',
-        address: '',
+        address: address,
         verified: false,
         lat:0,
         lng:0, 
@@ -49,13 +49,13 @@ export const CustomerSignUp = async (req: Request, res: Response, next:NextFunct
 
         await onRequestOTP(otp, phone)
 
-        const signature = GenerateSignature({
+        const token = GenerateSignature({
             _id: result.id,
             email: result.email,
             verified: result.verified
         })
 
-        return res.status(201).json({ signature: signature, verified: result.verified, email: result.email});
+        return res.status(201).json({ token: token, verified: result.verified, email: result.email});
 
     }
 
@@ -87,13 +87,13 @@ export const CustomerLogin = async (req: Request, res: Response, next:NextFuncti
         const validation = await ValidatePassword(password, customer.password, customer.salt);
 
         if (validation){
-            const signature = GenerateSignature({
+            const token = GenerateSignature({
                 _id: customer.id,
                 email: customer.email,
                 verified: customer.verified
             })
     
-            return res.status(201).json({ signature: signature, 
+            return res.status(201).json({ token: token, 
                 verified: customer.verified, 
                 email: customer.email});
         }
@@ -116,10 +116,17 @@ export const CustomerLogin = async (req: Request, res: Response, next:NextFuncti
 
 
 
+
+
+
+
+
+
+
 export const CustomerVerify = async (req: Request, res: Response, next:NextFunction) =>{
     const {otp} = req.body;
     const customer = req.user;
-
+   
     if (customer){
 
         const profile = await Customer.findById(customer._id)
@@ -128,12 +135,12 @@ export const CustomerVerify = async (req: Request, res: Response, next:NextFunct
                 profile.verified = true;
                 const updateCustomerResponse = await profile.save();
 
-                const signature = GenerateSignature({
+                const token = GenerateSignature({
                     _id: updateCustomerResponse.id,
                     email: updateCustomerResponse.email,
                     verified: updateCustomerResponse.verified
                 })
-                return res.status(201).json({ signature: signature,
+                return res.status(201).json({ token: token,
                      verified: updateCustomerResponse.verified,
                       email: updateCustomerResponse.email});
 
