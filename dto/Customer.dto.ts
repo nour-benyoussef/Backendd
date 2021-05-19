@@ -43,6 +43,6 @@ export interface CustomerPayload{
 }
 
 export class OrderInputs {
-    _id: string;
+    _id: String;
     unit:number;
 }

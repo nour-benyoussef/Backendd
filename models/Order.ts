@@ -8,10 +8,7 @@ export interface OrderDoc extends Document {
     totalAmount :number,
     orderDate : Date,
     paidThrough : string,
-    paymentResponse : string,
     orderStatus : string,
-    ramarks:string,
-    deliveryId: string,
     readyTime: number
     affect:String
     state:Boolean
@@ -29,10 +26,7 @@ const OrderSchema = new Schema({
     totalAmount :{type: Number, required: true},
     orderDate : {type: Date},
     paidThrough : { type : String},
-    paymentResponse : { type : String},
     orderStatus : { type : String},
-    ramarks:{ type : String},
-    deliveryId: { type : String},
     readyTime: { type : Number},
     affect:{type:String,default:"Affect"},
     state:{type:Boolean,default:false}

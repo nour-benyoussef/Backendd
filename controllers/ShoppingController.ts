@@ -7,6 +7,7 @@ export const GetFoodAvailability = async (req: Request, res:Response , next: Nex
     const result = await Vandor.find()
     .sort([['rating' , 'descending']])
     .populate("foods")
+    console.log(result)
 
     if(result.length >0){
         return res.status(200).json(result)

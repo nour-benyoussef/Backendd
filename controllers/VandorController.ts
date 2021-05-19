@@ -95,14 +95,12 @@ export const AddFood = async(req:Request, res:Response,next :NextFunction) => {
     const user = req.user;
     if (user){
 
-        const {name,description,category,foodType,readyTime,price} = <CreateFoodInputs>req.body;
+        const {name,description,category,foodType,readyTime,price, images} = <CreateFoodInputs>req.body;
         const vandor = await FindVandor(user._id)
-        console.log(user._id)
+ 
         if (vandor !== null){
 
-          const files = req.files as [Express.Multer.File]
-
-            const images = files.map((file:Express.Multer.File)=> file.filename)
+       
 
             const createdFood= await Food.create({
                 vandorId: vandor._id,
@@ -144,33 +142,6 @@ export const GetFoods = async(req:Request, res:Response,next :NextFunction) => {
     
 }
 
-export const UpdateVandorCoverImage = async(req:Request, res:Response,next :NextFunction) => {
-
-    const user = req.user;
-    if (user){
-
-        const vandor = await FindVandor(user._id)
-        if (vandor !== null){
-
-            const files = req.files as [Express.Multer.File]
-
-            const images = files.map((file:Express.Multer.File)=> file.filename)
-
-            vandor.coverImages.push(...images)
-
-
-            const result = await vandor.save();
-
-            return res.json(result);
-        }
-
-
-    }
-    return res.json({"message": "Something went wrong with add food"})
-    
-}
-
-
 
 export const GetCurrentOrders = async(req:Request, res:Response,next :NextFunction) => {
 
@@ -203,32 +174,3 @@ export const GetOrderDetails = async(req:Request, res:Response,next :NextFunctio
 }
 
 
-
-export const ProcessOrder = async(req:Request, res:Response,next :NextFunction) => {
-
-    const orderId = req.params.id;
-    const{status, ramarks , time} = req.body;
-    if(orderId){
-        const order = await Order.findById(orderId).populate('food');
-        if(order){
-            order.orderStatus = status;
-            order.ramarks = ramarks;
-            if (time){
-                order.readyTime = time;
-            }
-            const orderResult = await order.save();
-            if(orderResult){
-                return res.status(200).json(orderResult)
-
-            }
-    
-        
-        }
-
-
-
-    }
-    return res.json({"message": "Unable to process Order"})
-
-
-}

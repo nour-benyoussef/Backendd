@@ -16,7 +16,7 @@ export const CustomerSignUp = async (req: Request, res: Response, next:NextFunct
         return res.status(400).json(inputsErrors);
     }
 
-    const {email, phone , password,address} = customerInputs;
+    const {email, phone , password, address} = customerInputs;
 
     const salt= await GenerateSalt()
     const userPassword = await GeneratePassword(password, salt)
@@ -351,21 +351,24 @@ export const CreateOrder = async (req: Request, res: Response, next:NextFunction
     const customer = req.user;
     if(customer){
 
-        const orderId=`${Math.floor(Math.random()* 89999) + 1000}`;
         const profile = await Customer.findById(customer._id);
-        const cart = <[OrderInputs]>req.body;
+
+        const orderId=`${Math.floor(Math.random()* 89999) + 1000}`;
+        var cart  = <[OrderInputs]>req.body.cart;
         let cartItems = Array();
         let netAmount = 0.0;
         let VandorId;
+       
+  
+    
 
         const foods = await Food.find().where('_id').in(cart.map(item => item._id)).exec();
-
         foods.map(food => {
-            cart.map(({_id, unit})=>{
+            cart.map(({_id,unit})=>{
                 if(food._id == _id){
                     VandorId = food.vandorId;
-                    netAmount += (food.price * unit);
-                    cartItems.push({food,unit})
+                    netAmount = netAmount+(food.price * unit);
+                    cartItems.push({food,unit:unit})
                 }
             })
         })
@@ -380,17 +383,14 @@ export const CreateOrder = async (req: Request, res: Response, next:NextFunction
                 totalAmount: netAmount,
                 orderDate : new Date(),
                 paidThrough: 'COD',
-                paymentResponse:'',
                 orderStatus: 'Waiting',
-                rmarks:'',
-                deliveryId:'',
                 readyTime:45,
-
             })
 
+           
         
                 if (profile){
-                    profile.cart = [] as any 
+                profile.cart = [] as any 
                 profile.orders.push(currentOrder);
                 const profileSaveResponse = await profile.save();
                  return res.status(200).json(profileSaveResponse);

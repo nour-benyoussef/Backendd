@@ -7,6 +7,7 @@ export interface CreateVandorInput{
     phone: string;
     email: string;
     password: string;
+    coverImages:string;
 }
 
 export interface EditVandorInputs{

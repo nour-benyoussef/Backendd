@@ -10,7 +10,7 @@ export interface FoodDoc extends Document {
     readyTime:number;
     price:number;
     rating: number;
-    images:[string]
+    images:string
 }
 
 const FoodSchema = new Schema({
@@ -22,7 +22,7 @@ const FoodSchema = new Schema({
     readyTime:{type : Number},
     price:{type : Number, required: true},
     rating: {type : Number},
-    images:{type : [String]},
+    images:{type : String},
 },{
     toJSON:{
         transform(doc, ret){

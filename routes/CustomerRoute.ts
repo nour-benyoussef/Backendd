@@ -26,7 +26,7 @@ router.delete('/cart', DeleteCart);
 //payment
 
 //order
-router.post('/create-order',CreateOrder);
+router.post('/createorder',CreateOrder);
 router.get('/orders',GetOrders);
 router.get('/order/:id',GetOrdersById)
 
