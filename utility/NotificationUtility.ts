@@ -13,7 +13,7 @@ export const GenerateOtp =() =>{
 
 export const onRequestOTP = async (otp: number, toPhoneNumber:string) =>{
     const accountSid = 'AC88c94d6e379ecc96f404d4cafeb41761';
-    const authToken = '557d58790494a407bf105b884e5e0436';
+    const authToken = '5927084686684f9a4af5e4458ee8031d';
     const client = require('twilio')(accountSid, authToken);
 
     const repons =await client.messages.create({

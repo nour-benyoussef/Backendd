@@ -3,6 +3,7 @@ import mongoose, {Schema,Document, Model} from 'mongoose';
 
 export interface FoodDoc extends Document {
     vandorId: string;
+    vandorAdress: string;
     name:string;
     description:string;
     category:string;
@@ -15,6 +16,7 @@ export interface FoodDoc extends Document {
 
 const FoodSchema = new Schema({
     vandorId: {type : String},
+    vandorAdress: {type : String, required: true},
     name:{type : String , required: true},
     description:{type : String, required: true},
     category:{type : String},

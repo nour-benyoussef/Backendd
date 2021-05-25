@@ -3,7 +3,8 @@ import mongoose, {Schema,Document, Model} from 'mongoose';
 
 export interface OrderDoc extends Document {
     orderID: string,
-    vandorId: String,
+    vandorAdress: String,
+    customerAdress:string,
     items: [any],
     totalAmount :number,
     orderDate : Date,
@@ -16,7 +17,8 @@ export interface OrderDoc extends Document {
 
 const OrderSchema = new Schema({
     orderID: { type : String, required: true},
-    vandorId: { type : String},
+    vandorAdress: { type : String},
+    customerAdress: { type : String},
     items: [
         {
             food: {type: Schema.Types.ObjectId, ref:"food" , required: true},

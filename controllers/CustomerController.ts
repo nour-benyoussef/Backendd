@@ -357,7 +357,8 @@ export const CreateOrder = async (req: Request, res: Response, next:NextFunction
         var cart  = <[OrderInputs]>req.body.cart;
         let cartItems = Array();
         let netAmount = 0.0;
-        let VandorId;
+        let VandorAdress;
+
        
   
     
@@ -366,19 +367,20 @@ export const CreateOrder = async (req: Request, res: Response, next:NextFunction
         foods.map(food => {
             cart.map(({_id,unit})=>{
                 if(food._id == _id){
-                    VandorId = food.vandorId;
+                    VandorAdress = food.vandorAdress;
                     netAmount = netAmount+(food.price * unit);
                     cartItems.push({food,unit:unit})
                 }
             })
         })
 
-
+        if (profile){
 
         if(cartItems){
             const currentOrder = await Order.create({
                 orderID: orderId,
-                vandorId:VandorId,
+                vandorAdress:VandorAdress,
+                customerAdress:profile.address,
                 items: cartItems,
                 totalAmount: netAmount,
                 orderDate : new Date(),
@@ -389,7 +391,7 @@ export const CreateOrder = async (req: Request, res: Response, next:NextFunction
 
            
         
-                if (profile){
+               
                 profile.cart = [] as any 
                 profile.orders.push(currentOrder);
                 const profileSaveResponse = await profile.save();

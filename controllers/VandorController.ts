@@ -104,6 +104,7 @@ export const AddFood = async(req:Request, res:Response,next :NextFunction) => {
 
             const createdFood= await Food.create({
                 vandorId: vandor._id,
+                vandorAdress: vandor.address,
                 name:name,
                 description: description,
                 category: category,
